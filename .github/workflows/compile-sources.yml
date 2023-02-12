@@ -4,7 +4,8 @@ on:
   push:
     branches: [main]
     paths:
-      - 'indexer/*'
+      - .github/workflows/compile-sources.yml
+      - indexer
       - 'sources/*.url'
 
   schedule:
