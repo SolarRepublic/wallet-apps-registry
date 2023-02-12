@@ -2,6 +2,7 @@ name: Compile Sources
 
 on:
   push:
+    branches: [main]
     paths:
       - 'indexer/*'
       - 'sources/*.url'
@@ -23,14 +24,15 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Install Deno
-      run: |
-        curl -fsSL https://deno.land/x/install/install.sh | sh
+      uses: denoland/setup-deno@v1
+      with:
+        deno-version: v1.x
 
     - name: Run Indexer
       id: indexer
       run: |
         # extract hosts from .url files (and assert that they are empty)
-        hosts=$(find sources -name '*.url' -exec sh -c '[[ $(wc -l < "{}") -eq 0 ]] && basename "{}"" .url' \;)
+        hosts=$(find sources -name '*.url' -exec sh -c '[[ $(wc -l < "{}") -eq 0 ]] && basename "{}" .url' \;)
 
         # pipe hosts lists into indexer and pipe output to new JSON file
         echo $hosts | deno run --allow-env --allow-net --allow-read --allow-write indexer/main.ts > messages.txt
