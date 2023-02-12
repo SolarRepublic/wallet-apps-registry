@@ -1,0 +1,53 @@
+name: Compile Sources
+
+on:
+  schedule:
+    - cron: '0 */1 * * *'
+  push:
+    paths:
+      - 'indexer/*'
+      - 'sources/*.url'
+
+jobs:
+  index-sources:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Install Deno
+      run: |
+        curl -fsSL https://deno.land/x/install/install.sh | sh
+
+    - name: Run Indexer
+      id: indexer
+      run: |
+        # extract hosts from .url files (and assert that they are empty)
+        hosts=$(find sources -name '*.url' -exec sh -c '[[ $(wc -l < "{}") -eq 0 ]] && basename "{}"" .url' \;)
+
+        # pipe hosts lists into indexer and pipe output to new JSON file
+        echo $hosts | deno run --allow-env --allow-net --allow-read --allow-write indexer/main.ts > messages.txt
+
+        # save to output variable
+        echo "commit_msg=$(cat messages.txt)" >> $GITHUB_OUTPUT
+
+    - name: Check if anything has changed
+      run: |
+        if ! git diff --quiet HEAD HEAD~; then
+          echo "Repository has changed, committing changes."
+        else
+          echo "Repository has not changed, exiting action."
+          exit 0
+        fi
+
+    - name: Commit
+      uses: EndBug/add-and-commit@v9
+      if: success()
+      with:
+        add: '-A'
+        default_author: github_actions
+        message: ${{ steps.indexer.outputs.commit_msg }}
