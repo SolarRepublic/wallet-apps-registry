@@ -35,10 +35,10 @@ jobs:
         hosts=$(find sources -name '*.url' -exec sh -c '[[ $(wc -l < "{}") -eq 0 ]] && basename "{}" .url' \;)
 
         # pipe hosts lists into indexer and pipe output to new JSON file
-        echo $hosts | deno run --allow-env --allow-net --allow-read --allow-write indexer/main.ts > messages.txt
+        echo $hosts | deno run --allow-env --allow-net --allow-read --allow-write indexer/main.ts > .messages.txt
 
         # save to output variable
-        echo "commit_msg=$(cat messages.txt)" >> $GITHUB_OUTPUT
+        echo "commit_msg=$(cat .messages.txt)" >> $GITHUB_OUTPUT
 
     - name: Check if anything has changed
       run: |
