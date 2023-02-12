@@ -11,11 +11,6 @@ In order to register an App, all you have to do is open a PR to add an empty `.u
 
 For example, an empty file called `app.example.net.url` will trigger the indexer to make a request to `https://app.example.net/`.
 
-As a basic requirement, all websites MUST:
- - be using HTTPS offering TLS 1.2 or TLS 1.3 and serving a valid certificate
- - in response to `GET /`, return an HTTP response with a 2xx status code **OR** 3xx redirect to a path on the same origin
- - include the `Content-Type` HTTP header with a value of `text/html` and contain a valid HTML document in the response body
-
 For indexing purposes, the website MUST provide the following metadata in the `<head>` of the HTML document:
  - App name and app icon via any of the following means (ordered by descending precedence):
   - Implement the [WHIP-002](https://github.com/SolarRepublic/WHIPs/blob/main/WHIPs/whip-002.md) specification (recommended)
@@ -27,6 +22,11 @@ The website MAY also provide the following optional metadata:
   - Use the [`<meta name="description" ...>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta/name) element (recommended)
   - **OR** use the `<meta name="og:description" ...>` element from [the Open Graph protocol](https://ogp.me/)
   - **OR** embed a valid [Web app manifest](https://developer.mozilla.org/en-US/docs/Web/Manifest) that includes the `description` property
+
+Additionally, as a basic requirement, all websites MUST:
+ - be using HTTPS offering TLS 1.2 or TLS 1.3 and serving a valid certificate
+ - in response to `GET /`, return an HTTP response with a 2xx status code **OR** 3xx redirect to a path on the same origin
+ - include the `Content-Type` HTTP header with a value of `text/html` and contain a valid HTML document in the response body
 
 
 ## Updating an App
