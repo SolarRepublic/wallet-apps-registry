@@ -8,7 +8,7 @@ on:
       - 'sources/*.url'
 
   schedule:
-    - cron: '0 */1 * * *'
+    - cron: '21 */1 * * *'
 
   workflow_dispatch:
 
