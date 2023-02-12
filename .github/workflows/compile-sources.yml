@@ -32,7 +32,7 @@ jobs:
       id: indexer
       run: |
         # extract hosts from .url files
-        hosts=$(find sources -name '*.url' -exec 'basename "{}" .url' \;)
+        hosts=$(find sources -name '*.url' -exec basename {} .url \;)
 
         # pipe hosts lists into indexer and pipe output to new JSON file
         echo $hosts | deno run --allow-env --allow-net --allow-read --allow-write indexer/main.ts > .messages.txt
