@@ -1,12 +1,13 @@
 name: Compile Sources
 
 on:
-  schedule:
-    - cron: '0 */1 * * *'
   push:
     paths:
       - 'indexer/*'
       - 'sources/*.url'
+
+  schedule:
+    - cron: '0 */1 * * *'
 
 jobs:
   index-sources:
