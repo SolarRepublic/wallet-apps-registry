@@ -45,7 +45,7 @@ jobs:
 
     - name: Check if anything has changed
       run: |
-        if ! git diff --quiet HEAD HEAD~; then
+        if ! git diff --quiet HEAD; then
           echo "Repository has changed, committing changes."
         else
           echo "Repository has not changed, exiting action."
