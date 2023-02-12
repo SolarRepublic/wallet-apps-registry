@@ -38,7 +38,9 @@ jobs:
         echo $hosts | deno run --allow-env --allow-net --allow-read --allow-write indexer/main.ts > .messages.txt
 
         # save to output variable
-        echo "commit_msg=$(cat .messages.txt)" >> $GITHUB_OUTPUT
+        echo "commit_msg<<EOF" >> $GITHUB_OUTPUT
+        echo "$(cat .messages.txt)" >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
 
     - name: Check if anything has changed
       run: |
