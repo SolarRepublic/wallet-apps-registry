@@ -3,6 +3,9 @@ name: Add Source
 on:
   pull_request:
     types: [opened, edited, synchronize]
+  
+  issue_comment:
+
 
   workflow_dispatch:
 
@@ -20,7 +23,7 @@ jobs:
       id: init_check_run
       uses: octokit/request-action@v2.x
       with:
-        route: POST /repos/${{ GITHUB_REPOSITORY }}/check-runs
+        route: POST /repos/${{ GITHUB_ACTION_REPOSITORY }}/check-runs
         owner: octokit
         repo: request-action
         name: "Source Validator"
