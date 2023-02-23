@@ -15,7 +15,7 @@ const a_tasks: Promise<AppDescriptor | null>[] = [];
 await Deno.mkdir('cache', {recursive:true});
 
 // parse stdin; each host
-const a_hosts = new TextDecoder().decode(await readAll(Deno.stdin)).trim().split(/\n/g).filter(s => s);
+const a_hosts = new TextDecoder().decode(await readAll(Deno.stdin)).trim().split(/\s+/g).filter(s => s);
 for(const s_host of a_hosts) {
 	// validate url
 	try {
