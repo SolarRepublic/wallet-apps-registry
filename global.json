@@ -1,1 +1,16 @@
-[]
+[
+	{
+		"host": "amberdao.io",
+		"homepage": "https://amberdao.io/",
+		"name": "Amber",
+		"description": "",
+		"icon": "cache/BYiwsGiMDhkTrv0dRe0X5Zb0TefwoNr8Z6FmHcG7vxY.svg"
+	},
+	{
+		"host": "m.s2r.sh",
+		"homepage": "https://m.s2r.sh/",
+		"name": "StarShell Share",
+		"description": "Private Info Sharing. Entries saved to browser cache. Data never leaves your device.",
+		"icon": "cache/YCEkq8oYteMNpUrdtQyl-wygRM2FkMX9Ttx1qYsPNBI.svg"
+	}
+]
