@@ -81,10 +81,9 @@ A GET request to `https://app.example.net/` should return something like the fol
 </html>
 ```
 
-Finally, open a PR to this repository that creates a new, empty file under the `sources/` directory:
-```
-A sources/app.example.net.url
-```
+[Create a new file](https://github.com/SolarRepublic/wallet-apps-registry/new/main/sources?filename=app.example.net.url&value=+) in this repository under the `sources/` directory (replacing `app.example.net.url` filename with the appropriate URL for your app if you used the link). The contents of the file MUST remain empty.
+
+Finally, submit a PR to this repository adding the file. It will be reviewed
 
 
 ## Accessing the published JSON registry

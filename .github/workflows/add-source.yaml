@@ -1,0 +1,80 @@
+name: Add Source
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    LABEL: adds-source
+
+
+jobs:
+  add_source:
+    runs-on: ubuntu-latest
+    if: contains(github.event.pull_request.labels.*.name, env.LABEL)
+
+    steps:
+    - name: Update pull request status
+      id: init_check_run
+      uses: octokit/request-action@v2.x
+      with:
+        route: POST /repos/${{ GITHUB_REPOSITORY }}/check-runs
+        owner: octokit
+        repo: request-action
+        name: "Source Validator"
+        head_sha: ${{ github.sha }}
+        output: |
+          title: Source Validator
+          summary: Performing dry-run harvest and evaluation of given source
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Validate changes
+      run: |
+        git --no-pager diff --name-status main HEAD | while read line; do
+          if [[ $line != "A	sources/"* ]]; then
+            echo "::set-env name=reason::PRs with the '${{ env.LABEL }}' label are only allowed to add new sources, however diff found \"$line\""
+            echo "::set-env name=result::failure"
+            break
+          fi
+        done
+
+    - name: Validate file contents
+      if: env.added_source_file
+      run: |
+        echo "Validating contents of ${{ env.added_source_file }}..."
+        # Add your validation logic here
+        result=$?
+        if [ $result -eq 0 ]; then
+          echo "Validation succeeded."
+        else
+          echo "Validation failed."
+        fi
+
+    - name: Update status
+      uses: octokit/request-action@v2.x
+      id: update_check_run
+      with:
+        route: PATCH /repos/{owner}/{repo}/check-runs/{check_run_id}
+        owner: octokit
+        repo: request-action
+        check_run_id: ${{ fromJson(steps.create_check_run.outputs.data).id }}
+        conclusion: ${{ env.result }}
+        output:
+          title: ${{ env.title }}
+          summary: ${{ env.summary }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    # - name: Merge pull request
+    #   if: env.added_source_file
+    #   uses: octokit/request-action@v1
+    #   with:
+    #     octokit-event-path: ${{ toJson(github) }}
+    #     action: pulls/merge
+    #     parameters:
+    #       merge_method: merge
