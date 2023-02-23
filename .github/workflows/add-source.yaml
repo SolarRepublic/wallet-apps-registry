@@ -23,7 +23,7 @@ jobs:
       id: init_check_run
       uses: octokit/request-action@v2.x
       with:
-        route: POST /repos/${{ GITHUB_ACTION_REPOSITORY }}/check-runs
+        route: POST /repos/${{ github.repository }}/check-runs
         owner: octokit
         repo: request-action
         name: "Source Validator"
