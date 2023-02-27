@@ -12,5 +12,12 @@
 		"name": "StarShell Share",
 		"description": "Private Info Sharing. Entries saved to browser cache. Data never leaves your device.",
 		"icon": "cache/YCEkq8oYteMNpUrdtQyl-wygRM2FkMX9Ttx1qYsPNBI.svg"
+	},
+	{
+		"host": "wrap.scrt.network",
+		"homepage": "https://wrap.scrt.network/",
+		"name": "Get Privacy",
+		"description": "Get Privacy using IBC and Secret Network",
+		"icon": "cache/ejeNRUkiqs8rSNFXNuf_QrIStskRBzOmnsR-Uffl4yc.svg"
 	}
 ]
