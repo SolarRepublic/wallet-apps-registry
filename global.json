@@ -33,5 +33,12 @@
 		"name": "Stashh",
 		"description": "Unlock the Future with Secret NFTs. Mint, buy, and trade the first NFTs with native privacy and access control. Secret NFTs take",
 		"icon": "cache/yQvrzsX2Co4doxD9Swn-fXWZUBFTsKBxq3DY_iK9RHo.svg"
+	},
+	{
+		"host": "wrap.scrt.network",
+		"homepage": "https://wrap.scrt.network/",
+		"name": "Get Privacy",
+		"description": "Get Privacy using IBC and Secret Network",
+		"icon": "cache/ejeNRUkiqs8rSNFXNuf_QrIStskRBzOmnsR-Uffl4yc.svg"
 	}
 ]
