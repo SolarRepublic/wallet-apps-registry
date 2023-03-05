@@ -4,41 +4,49 @@
 		"homepage": "https://amberdao.io/",
 		"name": "Amber",
 		"description": "",
-		"icon": "cache/BYiwsGiMDhkTrv0dRe0X5Zb0TefwoNr8Z6FmHcG7vxY.svg"
+		"icon": "cache/BYiwsGiMDhkTrv0dRe0X5Zb0TefwoNr8Z6FmHcG7vxY.svg",
+		"chains": [
+			"cosmos:secret-4"
+		]
 	},
 	{
 		"host": "blackbox.cash",
 		"homepage": "https://blackbox.cash/",
 		"name": "BlackBox",
 		"description": "",
-		"icon": "cache/TUgUd_reWpFO8SsMZvGxqVD1UpOxWdFffrweivys4XE.svg"
+		"icon": "cache/TUgUd_reWpFO8SsMZvGxqVD1UpOxWdFffrweivys4XE.svg",
+		"chains": []
 	},
 	{
 		"host": "certup.net",
 		"homepage": "https://certup.net/",
 		"name": "CertUP",
 		"description": "Private NFT Certificates on Secret Network",
-		"icon": "cache/PR_a6dzf1MsRHTCSQkmj8c0j8MRfYT4_z367CQbxCm0.svg"
+		"icon": "cache/PR_a6dzf1MsRHTCSQkmj8c0j8MRfYT4_z367CQbxCm0.svg",
+		"chains": []
 	},
 	{
 		"host": "m.s2r.sh",
 		"homepage": "https://m.s2r.sh/",
 		"name": "StarShell Share",
 		"description": "Private Info Sharing. Entries saved to browser cache. Data never leaves your device.",
-		"icon": "cache/YCEkq8oYteMNpUrdtQyl-wygRM2FkMX9Ttx1qYsPNBI.svg"
+		"icon": "cache/YCEkq8oYteMNpUrdtQyl-wygRM2FkMX9Ttx1qYsPNBI.svg",
+		"chains": []
 	},
 	{
 		"host": "sandbox.stashh.io",
 		"homepage": "https://sandbox.stashh.io/",
 		"name": "Stashh",
 		"description": "Unlock the Future with Secret NFTs. Mint, buy, and trade the first NFTs with native privacy and access control. Secret NFTs take",
-		"icon": "cache/yQvrzsX2Co4doxD9Swn-fXWZUBFTsKBxq3DY_iK9RHo.svg"
+		"icon": "cache/yQvrzsX2Co4doxD9Swn-fXWZUBFTsKBxq3DY_iK9RHo.svg",
+		"chains": []
 	},
 	{
 		"host": "wrap.scrt.network",
 		"homepage": "https://wrap.scrt.network/",
 		"name": "Get Privacy",
 		"description": "Get Privacy using IBC and Secret Network",
-		"icon": "cache/ejeNRUkiqs8rSNFXNuf_QrIStskRBzOmnsR-Uffl4yc.svg"
+		"icon": "cache/ejeNRUkiqs8rSNFXNuf_QrIStskRBzOmnsR-Uffl4yc.svg",
+		"chains": []
 	}
 ]
