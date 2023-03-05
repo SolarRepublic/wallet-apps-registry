@@ -1,4 +1,5 @@
-import {DOMParser} from 'https://deno.land/x/deno_dom@v0.1.36-alpha/deno-dom-wasm.ts';
+import {DOMParser, type Element} from 'https://deno.land/x/deno_dom@v0.1.36-alpha/deno-dom-wasm.ts';
+import {parse as parseToml} from 'https://deno.land/std@0.178.0/encoding/toml.ts';
 
 import AsyncLockPool from "./async-lock-pool.ts";
 
@@ -21,6 +22,7 @@ export type AppDescriptor = {
 	name: string;
 	description: string;
 	icon: string;
+	chains: string[];
 };
 
 export class RemovableOffense extends Error {
@@ -274,6 +276,49 @@ export async function process_dapp(s_host: string, kp_clients: AsyncLockPool|nul
 		}
 	}
 
+	const as_chains = new Set<`${string}:${string}`>();
+	{
+		// each script
+		for(const dm_script of Array.from(dm_head.querySelectorAll('script[data-whip-003]')) as Element[]) {
+			// get content type
+			const sx_mime = dm_script.getAttribute('type') || '';
+
+			// prep content ref
+			let w_content!: {
+				chains?: Record<string, {
+					namespace?: string;
+					reference?: string;
+				}>;
+			};
+
+			// toml
+			if(/^(application|text)\/toml/.test(sx_mime)) {
+				try {
+					w_content = parseToml(dm_script.textContent);
+				}
+				catch(_e_parse) {/**/}
+			}
+			// json
+			else if(/^application\/json/.test(sx_mime)) {
+				try {
+					w_content = JSON.parse(dm_script.textContent);
+				} catch(_e_parse) {/**/}
+			}
+
+			// skip invalid
+			if('object' !== typeof w_content?.chains) continue;
+
+			// each entry
+			for(const [, g_chain] of Object.entries(w_content.chains)) {
+				// skip invalid
+				if('string' !== typeof g_chain?.namespace || 'string' !== typeof g_chain?.reference) continue;
+
+				// add to set
+				as_chains.add(`${g_chain.namespace}:${g_chain.reference}`);
+			}
+		}
+	}
+
 	// return struct
 	return {
 		host: s_host,
@@ -281,5 +326,6 @@ export async function process_dapp(s_host: string, kp_clients: AsyncLockPool|nul
 		name: s_app_name.slice(0, N_LIMIT_LENGTH_NAME),
 		description: (s_app_description || '').slice(0, N_LIMIT_LENGTH_DESCRIPTION),
 		icon: sr_icon,
+		chains: [...as_chains],
 	};
 }
