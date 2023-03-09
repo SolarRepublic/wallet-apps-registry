@@ -39,7 +39,7 @@ export class RemovableOffense extends Error {
 	}
 }
 
-export async function process_dapp(s_host: string, kp_clients: AsyncLockPool|null=null): Promise<AppDescriptor> {
+export async function process_dapp(s_host: string, kp_clients: AsyncLockPool|null=null, b_dryrun=false): Promise<AppDescriptor> {
 	// prep homepage url
 	let p_homepage = `https://${s_host}/`;
 
@@ -262,17 +262,19 @@ export async function process_dapp(s_host: string, kp_clients: AsyncLockPool|nul
 		sr_icon = `cache/${sb64u_file}.svg`;
 
 		// write file
-		try {
-			await Deno.writeTextFile(sr_icon, sx_icon, {
-				createNew: true,
-			});
-		}
-		catch(e_write) {
-			// already exists
-			if('EEXIST' === e_write.code) break CACHE_ICON;
+		if(!b_dryrun) {
+			try {
+				await Deno.writeTextFile(sr_icon, sx_icon, {
+					createNew: true,
+				});
+			}
+			catch(e_write) {
+				// already exists
+				if('EEXIST' === e_write.code) break CACHE_ICON;
 
-			// write failure
-			throw e_write;
+				// write failure
+				throw e_write;
+			}
 		}
 	}
 

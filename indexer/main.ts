@@ -1,4 +1,5 @@
 import {readAll} from 'https://deno.land/std@0.129.0/streams/conversion.ts';
+import {parse as parseArgv} from 'https://deno.land/std@0.175.0/flags/mod.ts';
 
 import {AsyncLockPool} from './async-lock-pool.ts';
 import {AppDescriptor, process_dapp, RemovableOffense} from './processor.ts';
@@ -11,8 +12,16 @@ const kp_clients = new AsyncLockPool(parseInt(Deno.env.get('CONCURRENT_REQUESTS'
 
 const a_tasks: Promise<AppDescriptor | null>[] = [];
 
+const h_flags = parseArgv(Deno.args, {
+	boolean: ['dry-run'],
+});
+
+const b_dryrun = !!h_flags['dry-run'];
+
 // prep cache dir
-await Deno.mkdir('cache', {recursive:true});
+if(!b_dryrun) {
+	await Deno.mkdir('cache', {recursive:true});
+}
 
 // parse stdin; each host
 const a_hosts = new TextDecoder().decode(await readAll(Deno.stdin)).trim().split(/\s+/g).filter(s => s);
@@ -27,7 +36,7 @@ for(const s_host of a_hosts) {
 	}
 
 	// process dapp
-	a_tasks.push(process_dapp(s_host, kp_clients));
+	a_tasks.push(process_dapp(s_host, kp_clients, b_dryrun));
 }
 
 // wait until all tasks settle
@@ -82,7 +91,7 @@ for(const g_settled of a_settled) {
 }
 
 // delete unused files
-{
+if(!b_dryrun) {
 	const a_icons = a_apps.map(g => g.icon);
 	const a_delete = [...Deno.readDirSync('cache')]
 		.filter(g => g.isFile && !a_icons.includes(`cache/${g.name}`));
@@ -92,9 +101,16 @@ for(const g_settled of a_settled) {
 	}
 }
 
-// generate registry and save to file
+// generate registry
 const sx_registry = JSON.stringify(a_apps.sort((g_a, g_b) => g_a.host < g_b.host? -1: 1), null, '\t');
-await Deno.writeTextFile('global.json', sx_registry);
+
+// save to file
+if(b_dryrun) {
+	console.log(sx_registry);
+}
+else {
+	await Deno.writeTextFile('global.json', sx_registry);
+}
 
 // print commit message to stdout
 console.log(a_messages.join('\n'));
