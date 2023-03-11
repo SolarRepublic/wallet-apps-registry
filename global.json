@@ -10,6 +10,16 @@
 		]
 	},
 	{
+		"host": "beta.dibs.domains",
+		"homepage": "https://beta.dibs.domains/",
+		"name": "Dibs",
+		"description": "",
+		"icon": "cache/DMszBBCR89PMMo2fkIIEgx9khqPxiyjIEpJ6snx6ugE.svg",
+		"chains": [
+			"cosmos:secret-4"
+		]
+	},
+	{
 		"host": "blackbox.cash",
 		"homepage": "https://blackbox.cash/",
 		"name": "BlackBox",
