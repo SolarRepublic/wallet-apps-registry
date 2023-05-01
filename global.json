@@ -44,6 +44,16 @@
 		"chains": []
 	},
 	{
+		"host": "prisnr.games",
+		"homepage": "https://prisnr.games/",
+		"name": "prisnr.games",
+		"description": "",
+		"icon": "cache/aAnX0e0juy5IEhcWDCi8-eqEPQOFht32zlN4APuQJuE.svg",
+		"chains": [
+			"cosmos:pulsar-2"
+		]
+	},
+	{
 		"host": "sandbox.stashh.io",
 		"homepage": "https://sandbox.stashh.io/",
 		"name": "Stashh",
