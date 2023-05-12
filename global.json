@@ -1,5 +1,15 @@
 [
 	{
+		"host": "amberdao.io",
+		"homepage": "https://amberdao.io/",
+		"name": "Amber",
+		"description": "",
+		"icon": "cache/BYiwsGiMDhkTrv0dRe0X5Zb0TefwoNr8Z6FmHcG7vxY.svg",
+		"chains": [
+			"cosmos:secret-4"
+		]
+	},
+	{
 		"host": "beta.dibs.domains",
 		"homepage": "https://beta.dibs.domains/",
 		"name": "Dibs",
