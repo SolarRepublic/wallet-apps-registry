@@ -36,6 +36,14 @@
 		"chains": []
 	},
 	{
+		"host": "dash.scrt.network",
+		"homepage": "https://dash.scrt.network/",
+		"name": "Secret Dashboard",
+		"description": "Secret Dashboard is an entry point for new users into Secret Network.",
+		"icon": "cache/PAoSpHE1DE_MpZYMl5FAun3zEEU_k3b3MtdyyJP2d7Q.svg",
+		"chains": []
+	},
+	{
 		"host": "m.s2r.sh",
 		"homepage": "https://m.s2r.sh/",
 		"name": "StarShell Share",
@@ -59,14 +67,6 @@
 		"name": "Stashh",
 		"description": "Join over 100,000 Stashhers discovering, collecting, creating, and sharing digital collectibles. Build your Stashh profile, clai",
 		"icon": "cache/yQvrzsX2Co4doxD9Swn-fXWZUBFTsKBxq3DY_iK9RHo.svg",
-		"chains": []
-	},
-	{
-		"host": "wrap.scrt.network",
-		"homepage": "https://wrap.scrt.network/",
-		"name": "Get Privacy",
-		"description": "Get Privacy using IBC and Secret Network",
-		"icon": "cache/ejeNRUkiqs8rSNFXNuf_QrIStskRBzOmnsR-Uffl4yc.svg",
 		"chains": []
 	}
 ]
