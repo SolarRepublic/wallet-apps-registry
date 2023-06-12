@@ -44,14 +44,6 @@
 		"chains": []
 	},
 	{
-		"host": "m.s2r.sh",
-		"homepage": "https://m.s2r.sh/",
-		"name": "StarShell Share",
-		"description": "Private Info Sharing. Entries saved to browser cache. Data never leaves your device.",
-		"icon": "cache/YCEkq8oYteMNpUrdtQyl-wygRM2FkMX9Ttx1qYsPNBI.svg",
-		"chains": []
-	},
-	{
 		"host": "prisnr.games",
 		"homepage": "https://prisnr.games/",
 		"name": "prisnr.games",
