@@ -4,6 +4,7 @@ import {parse as parseToml} from 'https://deno.land/std@0.178.0/encoding/toml.ts
 import {JSDOM} from 'https://jspm.dev/npm:jsdom-deno@19.0.2';
 
 import AsyncLockPool from "./async-lock-pool.ts";
+import { H_TEMPORARY_EXEMPTIONS } from './temp.ts';
 
 function positive_int_from_env_var(s_var: string, n_default: number): number {
 	const s_value = Deno.env.get(s_var);
@@ -123,13 +124,17 @@ export async function process_dapp(s_host: string, kp_clients: AsyncLockPool|nul
 
 	// await for event
 	await new Promise((fk_resolve, fe_reject) => {
-		d_window.addEventListener('load', () => {
-			fk_resolve(void 0);
-		});
-
-		setTimeout(() => {
+		let i_timeout = setTimeout(() => {
 			fe_reject(new Error(`Timed out while waiting for page load event`));
 		}, 5e3);
+
+		d_window.addEventListener('load', () => {
+			clearTimeout(i_timeout);
+
+			// setTimeout(() => {
+				fk_resolve(void 0);
+			// }, 1e3);
+		});
 	});
 
 	// ref doc head
@@ -305,6 +310,12 @@ export async function process_dapp(s_host: string, kp_clients: AsyncLockPool|nul
 	}
 
 	const as_chains = new Set<`${string}:${string}`>();
+
+	// temporary exemptions
+	for(const si_chain of H_TEMPORARY_EXEMPTIONS[s_host] || []) {
+		as_chains.add(si_chain);
+	}
+
 	{
 		// each script
 		for(const dm_script of Array.from(dm_head.querySelectorAll('script[data-whip-003]')) as Element[]) {
