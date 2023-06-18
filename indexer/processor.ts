@@ -1,6 +1,8 @@
 import {DOMParser, type Element} from 'https://deno.land/x/deno_dom@v0.1.36-alpha/deno-dom-wasm.ts';
 import {parse as parseToml} from 'https://deno.land/std@0.178.0/encoding/toml.ts';
 
+import {JSDOM} from 'https://jspm.dev/npm:jsdom-deno@19.0.2';
+
 import AsyncLockPool from "./async-lock-pool.ts";
 
 function positive_int_from_env_var(s_var: string, n_default: number): number {
@@ -103,8 +105,32 @@ export async function process_dapp(s_host: string, kp_clients: AsyncLockPool|nul
 	// empty response body
 	if(!s_text) throw new RemovableOffense(s_host, `<${p_homepage}> returned an empty response body`);
 
-	// parse text as html
-	const d_doc = new DOMParser().parseFromString(s_text, 'text/html');
+	const y_jsdom = new JSDOM(s_text, {
+		url: p_homepage,
+		contentType: 'text/html',
+		storageQuota: 1024 * 1024,  // 1 MiB
+	});
+
+	// debugger;
+
+	// console.log(y_jsdom);
+
+	// // parse text as html
+	// const d_doc = new DOMParser().parseFromString(s_text, 'text/html');
+
+	const d_window = y_jsdom.window;
+	const d_doc = d_window.document
+
+	// await for event
+	await new Promise((fk_resolve, fe_reject) => {
+		d_window.addEventListener('load', () => {
+			fk_resolve(void 0);
+		});
+
+		setTimeout(() => {
+			fe_reject(new Error(`Timed out while waiting for page load event`));
+		}, 5e3);
+	});
 
 	// ref doc head
 	const dm_head = d_doc?.head;
@@ -304,6 +330,58 @@ export async function process_dapp(s_host: string, kp_clients: AsyncLockPool|nul
 			else if(/^application\/json/.test(sx_mime)) {
 				try {
 					w_content = JSON.parse(dm_script.textContent);
+				} catch(_e_parse) {/**/}
+			}
+
+			// skip invalid
+			if('object' !== typeof w_content?.chains) continue;
+
+			// each entry
+			for(const [, g_chain] of Object.entries(w_content.chains)) {
+				// skip invalid
+				if('string' !== typeof g_chain?.namespace || 'string' !== typeof g_chain?.reference) continue;
+
+				// add to set
+				as_chains.add(`${g_chain.namespace}:${g_chain.reference}`);
+			}
+		}
+
+		// linked definitions
+		for(const dm_link of Array.from(dm_head.querySelectorAll('link[rel="prefetch"][as="fetch"][href][data-whip-003]')) as Element[]) {
+			// get href
+			const p_href = dm_link.getAttribute('href') || '';
+
+			// make request
+			const d_url = new URL(p_href, p_homepage);
+			const d_res = await fetch(d_url, {
+				signal: AbortSignal.timeout(5e3),
+			});
+
+			// load response body
+			const sx_definition = await d_res.text();
+
+			// get content-type
+			let sx_mime = d_res.headers.get('content-type') || '';
+
+			// prep content ref
+			let w_content!: {
+				chains?: Record<string, {
+					namespace?: string;
+					reference?: string;
+				}>;
+			};
+
+			// toml
+			if(/^(application|text)\/toml/.test(sx_mime) || (/^text\/(html|plain)/.test(sx_mime) && d_url.pathname.endsWith('.toml'))) {
+				try {
+					w_content = parseToml(sx_definition);
+				}
+				catch(_e_parse) {/**/}
+			}
+			// json
+			else if(/^application\/json/.test(sx_mime)) {
+				try {
+					w_content = JSON.parse(sx_definition);
 				} catch(_e_parse) {/**/}
 			}
 
